@@ -258,5 +258,26 @@ async function agregarComentario(nuevoComentario) {
 </script>
 
 <style scoped>
-/* Sección reservada para estilos específicos si se requieren */
+/* ────────────── Responsive específico para encabezado ────────────── */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .main-header h1 {
+    width: 100%;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+}
 </style>
