@@ -246,7 +246,29 @@ function resetForm() {
 
 .date-group {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 12px;
 }
+
+.date-group > div {
+  flex: 1;
+  min-width: 240px;
+}
+.table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .table table {
+    width: 800px;
+  }
+}
+
 </style>
