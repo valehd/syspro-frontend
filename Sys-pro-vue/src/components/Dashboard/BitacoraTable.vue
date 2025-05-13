@@ -54,7 +54,8 @@ function formatFechaHora(fecha) {
 onMounted(async () => {
   try {
     // URL base de la API, ajustable por entorno
-    const API = import.meta.env.VITE_API || 'http://localhost:3001'
+   const API = import.meta.env.VITE_API;
+
     
     // Realiza la solicitud GET para obtener las entradas de la bitácora
     const response = await axios.get(`${API}/bitacora`)
