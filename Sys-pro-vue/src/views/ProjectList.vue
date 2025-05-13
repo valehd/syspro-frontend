@@ -145,7 +145,9 @@ async function toggleExpand(project) {
   // Si el proyecto está siendo expandido y no tiene etapas cargadas, las obtenemos
   if (project.expanded && !project.etapas.length) {
     try {
-      const res = await fetch(`http://localhost:3001/projects/${project.id}/etapas`)
+      const API = import.meta.env.VITE_API;
+      const res = await fetch(`${API}/projects/${project.id}/etapas`)
+
       const data = await res.json()
       project.etapas = data
     } catch (error) {
