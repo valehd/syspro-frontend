@@ -313,3 +313,89 @@ select:focus,
 .logout-btn:hover {
   background-color: #dc2626;
 }
+
+/* ──────────────────────── Responsividad general ──────────────────────── */
+
+/* Contenedor principal adaptable en pantallas grandes y pequeñas */
+.main-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 1rem;
+}
+
+/* Sección de tarjetas con envoltura en pantallas reducidas */
+.top-cards,
+.cards-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Tarjetas internas adaptables (ResumeCard, AlertCard, etc.) */
+.resume-card,
+.alert-card {
+  flex: 1 1 200px;
+  min-width: 180px;
+}
+
+/* Buscador responsivo */
+.input-search {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Encabezado de alertas con separación flexible */
+.alerts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Sección de tabla con scroll horizontal si es necesario */
+.projects-section {
+  overflow-x: auto;
+}
+
+.projects-section table {
+  width: 100%;
+  min-width: 700px; /* Asegura que las columnas no se rompan en móvil */
+}
+
+/* ──────────────────────── Media queries ──────────────────────── */
+
+@media (max-width: 768px) {
+  /* Tarjetas apiladas en móviles */
+  .top-cards,
+  .cards-section {
+    flex-direction: column;
+  }
+
+  /* Cabecera de alertas en columna */
+  .alerts-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Tablas con fuente más compacta */
+  .projects-section table {
+    font-size: 0.85rem;
+  }
+
+  /* Botones expandibles */
+  .btn {
+    width: 100%;
+  }
+
+  /* Mejor espaciado en la bitácora */
+  .bitacora-section {
+    margin-bottom: 2rem;
+  }
+}
+
