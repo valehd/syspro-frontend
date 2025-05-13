@@ -114,7 +114,8 @@ function formatearEstadoDesdeDB(estado) {
 onMounted(async () => {
   try {
     // Realiza la solicitud para obtener los proyectos
-    const res = await fetch('http://localhost:3001/projects')
+    const API = import.meta.env.VITE_API;
+    const res = await fetch(`${API}/projects`)
     const data = await res.json()
 
     // Mapea los proyectos y formatea sus datos
