@@ -308,4 +308,46 @@ const enviarRecuperacion = () => {
 .invalid {
   border: 1px solid red !important;
 }
+  /* ─────────────── Responsive ─────────────── */
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 0 16px;
+  }
+
+  .logo-box img {
+    max-width: 280px;
+  }
+
+  .login-box {
+    padding: 20px;
+    box-shadow: none;
+    border-radius: 6px;
+  }
+
+  .login-btn {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+
+  .input-icon input {
+    font-size: 0.95rem;
+  }
+
+  .modal-card {
+    padding: 16px;
+    width: 90%;
+    max-width: 360px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+  }
+}
+
 </style>
