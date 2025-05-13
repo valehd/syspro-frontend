@@ -1,0 +1,212 @@
+<template>
+  <div class="dashboard-container">
+    <main class="main-content">
+      <header class="main-header">
+        <h1>Sugerencias</h1>
+        <!-- Input de búsqueda para filtrar técnicos y proyectos -->
+        <input type="text" v-model="search" class="input-search" placeholder="Buscar..." />
+      </header>
+
+      <!-- Técnicos con tiempo libre -->
+      <section class="card">
+        <h3>Técnicos con Tiempo Disponible</h3>
+        <!-- Tabla de técnicos con tiempo libre y tareas sugeridas -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Técnico</th>
+              <th>Día Disponible</th>
+              <th>Horas Libres</th>
+              <th>Tarea Sugerida</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(tech, i) in filteredTechs" :key="i">
+              <td>{{ tech.tecnico }}</td>
+              <td>{{ tech.dia }}</td>
+              <td>{{ tech.horas_disponibles }}</td>
+              <td>
+                <span v-if="tech.sugerencia">
+                  {{ tech.sugerencia.proyecto }} – {{ tech.sugerencia.etapa }} ({{ tech.sugerencia.duracion }} h)
+                </span>
+                <span v-else class="text-gray-400 italic">Sin coincidencias</span>
+              </td>
+              <td>
+                <button class="btn gray" @click="goToDetails(tech.sugerencia?.id_proyecto)">Ver Detalles</button>
+                <button class="btn btn-primary" @click="asignarTareaSugerida(tech)">Asignar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Proyectos cortos disponibles -->
+      <section class="card">
+        <h3>Proyectos Cortos Disponibles</h3>
+        <!-- Tabla de proyectos cortos que aún no tienen asignación -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Proyecto</th>
+              <th>Etapa</th>
+              <th>Horas Estimadas</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(stage, i) in filteredShortTasks" :key="i">
+              <td>{{ stage.nombre_proyecto }}</td>
+              <td>{{ stage.nombre_etapa }}</td>
+              <td>{{ stage.horas_estimadas }}</td>
+              <td><span class="status" :class="stage.estado_etapa.toLowerCase()">{{ stage.estado_etapa }}</span></td>
+              <td>
+                <button class="btn gray" @click="goToDetails(stage.id_proyecto)">Ver Detalles</button>
+                <button class="btn btn-primary" @click="asignarEtapaManual(stage)">Asignar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
+
+const router = useRouter()
+
+// Variables reactivas para los datos de sugerencias y proyectos cortos
+const search = ref('')
+const suggestions = ref([])
+const shortTasks = ref([])
+
+// Filtro de técnicos con tiempo libre
+const filteredTechs = computed(() =>
+  suggestions.value.filter(t =>
+    Object.values(t).some(val =>
+      typeof val === 'string' && val.toLowerCase().includes(search.value.toLowerCase())
+    )
+  )
+)
+
+// Filtro de proyectos cortos disponibles
+const filteredShortTasks = computed(() =>
+  shortTasks.value.filter(s =>
+    Object.values(s).some(val =>
+      String(val).toLowerCase().includes(search.value.toLowerCase())
+    )
+  )
+)
+
+// Obtención de las sugerencias de técnicos con tiempo libre
+async function fetchSuggestions() {
+  try {
+    const res = await axios.get(`${import.meta.env.VITE_API}/suggestions`)
+    suggestions.value = res.data.sugerencias || []
+  } catch (err) {
+    console.error('Error al cargar sugerencias:', err)
+  }
+}
+
+// Obtención de los proyectos cortos disponibles
+async function fetchShortTasks() {
+  try {
+    const res = await axios.get(`${import.meta.env.VITE_API}/suggestions/short-tasks`)
+    shortTasks.value = res.data
+  } catch (err) {
+    console.error('Error al cargar tareas cortas:', err)
+  }
+}
+
+// Función para asignar tarea sugerida a un técnico
+async function asignarTareaSugerida(tech) {
+  if (!tech?.sugerencia?.id_etapa || !tech?.id_usuario) {
+    alert('No hay una tarea válida para asignar.')
+    return
+  }
+
+  try {
+    const body = {
+      id_usuario: tech.id_usuario,
+      id_etapa: tech.sugerencia.id_etapa,
+      autor: tech.id_usuario
+    }
+    const res = await axios.post(`${import.meta.env.VITE_API}/asignarEtapa`, body)
+    alert(res.data.message || 'Etapa asignada correctamente.')
+    fetchSuggestions()
+    fetchShortTasks()
+  } catch (err) {
+    console.error('Error al asignar tarea sugerida:', err)
+    alert('Error al asignar tarea sugerida.')
+  }
+}
+
+// Función para asignar etapa manualmente a un técnico
+async function asignarEtapaManual(stage) {
+  const id_usuario = prompt('Ingrese el ID del técnico para asignar esta etapa:')
+  if (!id_usuario || isNaN(id_usuario)) {
+    alert('ID de técnico inválido.')
+    return
+  }
+
+  try {
+    const body = {
+      id_usuario: Number(id_usuario),
+      id_etapa: stage.id_etapa,
+      autor: Number(id_usuario)
+    }
+    const res = await axios.post(`${import.meta.env.VITE_API}/asignarEtapa`, body)
+    alert(res.data.message || 'Etapa asignada correctamente.')
+    fetchSuggestions()
+    fetchShortTasks()
+  } catch (err) {
+    console.error('Error al asignar etapa manual:', err)
+    alert('Error al asignar etapa.')
+  }
+}
+
+// Función para navegar a los detalles de un proyecto
+function goToDetails(idProyecto) {
+  if (!idProyecto) {
+    alert('Proyecto no disponible.')
+    return
+  }
+  router.push(`/project-details/${idProyecto}`)
+}
+
+// Carga inicial de datos cuando el componente es montado
+onMounted(() => {
+  fetchSuggestions()
+  fetchShortTasks()
+})
+</script>
+
+<style scoped>
+.status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status.detenido {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status.atrasado {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status.Finalizado {
+  background-color: #e2f0d9;
+  color: #155724;
+}
+</style>
