@@ -54,6 +54,7 @@ onMounted(async () => {
   color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 50;
+  position: relative;
 }
 
 .topbar-right {
@@ -62,12 +63,14 @@ onMounted(async () => {
   gap: 1.2rem;
 }
 
+/* Texto con fecha */
 .date-text {
   font-size: 0.875rem;
   color: #cbd5e1;
   white-space: nowrap;
 }
 
+/* Info del usuario: ícono + nombre */
 .user-info {
   display: flex;
   align-items: center;
@@ -81,4 +84,31 @@ onMounted(async () => {
   height: 20px;
   color: #94a3b8;
 }
+
+/* ───── Responsividad ───── */
+@media (max-width: 640px) {
+  .topbar {
+    justify-content: space-between;
+  }
+
+  .topbar-right {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .date-text,
+  .user-info {
+    font-size: 0.75rem;
+    text-align: right;
+  }
+
+  .user-info span {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
 </style>
