@@ -366,4 +366,45 @@ const adminId = getCurrentUser()?.id
   border: 1px solid #ffeeba;
   color: #856404;
 }
+/* ─────────────── Responsive ─────────────── */
+
+@media (max-width: 768px) {
+  /* Contenedor que permite hacer scroll horizontal en pantallas pequeñas */
+  .card {
+    overflow-x: auto;
+  }
+
+
+  .table {
+    min-width: 700px;
+    font-size: 0.85rem;
+  }
+
+
+  input,
+  select {
+    min-width: 140px;
+    font-size: 0.85rem;
+  }
+
+  .btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    white-space: nowrap;
+  }
+
+
+  .error-text {
+    font-size: 0.75rem;
+    margin-top: 2px;
+    line-height: 1.2;
+  }
+
+  td {
+    vertical-align: top;
+  }
+}
+
+  
 </style>
