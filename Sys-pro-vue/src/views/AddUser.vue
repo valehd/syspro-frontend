@@ -215,4 +215,36 @@ select {
   font-size: 0.85rem;
   margin-top: 4px;
 }
+  /* ─────────────── Responsive ─────────────── */
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+  }
+
+  input,
+  select {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .form-group label {
+    font-size: 1rem;
+  }
+
+  .card.form-section {
+    padding: 1.5rem;
+  }
+}
+
 </style>
