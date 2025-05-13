@@ -76,7 +76,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const logo = '/path/to/logo.png' // Coloca la ruta real del logo
+const logo = '/logo.png'
 
 // Datos del formulario de login
 const username = ref('')
@@ -123,7 +123,8 @@ const handleLogin = async () => {
   loading.value = true
 
   try {
-    const response = await fetch('http://localhost:3001/usuarios/login', {
+    const API = import.meta.env.VITE_API;
+    const response = await fetch(`${API}/usuarios/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: username.value, password: password.value })
