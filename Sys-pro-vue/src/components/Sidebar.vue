@@ -1,5 +1,10 @@
 <template>
-  <aside class="sidebar">
+   <aside :class="['sidebar', { 'sidebar-hidden': !menuVisible && isMobile }]">
+    <!-- Botón toggle solo en móviles -->
+    <button class="toggle-menu-btn" @click="menuVisible = !menuVisible" v-if="isMobile">
+      ☰ Menú
+    </button>
+    
     <!-- Encabezado del sidebar con logo clickeable -->
     <div class="sidebar-header" @click="goToDashboard" title="Ir al Dashboard">
       <img :src="logo" alt="Logo SYS-PRO" />
@@ -67,7 +72,9 @@ import { logout } from '@/utils/auth'
 const toast = useToast()
 const router = useRouter()
 const route = useRoute()
-
+const menuVisible = ref(true)
+const isMobile = ref(false)
+  
 const props = defineProps({
   nombre: String,
   rol: String
@@ -76,6 +83,11 @@ const props = defineProps({
 // Inicializa íconos SVG al montar
 onMounted(() => {
   window.lucide?.createIcons()
+  isMobile.value = window.innerWidth <= 768
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth <= 768
+    if (!isMobile.value) menuVisible.value = true
+  })
 })
 
 // Redirige al dashboard al hacer clic en el logo
@@ -173,6 +185,34 @@ function handleLogout() {
   align-items: center;
   gap: 10px;
   width: 100%;
+}
+
+  .sidebar-hidden {
+  transform: translateX(-100%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 50;
+}
+
+.toggle-menu-btn {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 100;
+  background-color: #1f2937;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .toggle-menu-btn {
+    display: block;
+  }
 }
 
 
