@@ -57,6 +57,7 @@
               <td>
                 <select v-model="stage.technician" class="input-search">
                   <option disabled value="">Selecciona técnico</option>
+                  <option value="">No asignar por ahora</option>
                   <option v-for="t in tecnicosDisponibles" :key="t.id_usuario" :value="t.id_usuario">
                     {{ t.nombre_usuario }}
                   </option>
@@ -190,10 +191,16 @@ function validarProyecto() {
       formErrors.value.stages[i].name = 'El nombre de la etapa es obligatorio.'
       valido = false
     }
+
+        // Técnico ahora es opcional: solo marcamos advertencia visual si se desea
+    // Puedes dejar este bloque comentado si en algún momento decides volver a activarlo
+    /*
     if (!stage.technician) {
       formErrors.value.stages[i].technician = 'Debe asignar un técnico.'
       valido = false
     }
+    */
+
     if (!stage.hours || stage.hours <= 0) {
       formErrors.value.stages[i].hours = 'Las horas deben ser mayores a cero.'
       valido = false
