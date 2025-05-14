@@ -28,10 +28,15 @@
           No se encontró ninguna tarea adecuada para ese día.
         </p>
 
-        <!-- Botón para ver más detalles de la sugerencia -->
-        <button class="btn btn-primary small" @click="$emit('open-modal')">
-          Ver detalles
-        </button>
+        <!-- Botones de acción -->
+        <div class="alert-buttons">
+            <button class="btn btn-success small" @click="$emit('asignar')">
+            Asignar ahora
+            </button>
+            <button class="btn btn-secondary small" @click="$emit('ver-proyecto')">
+            Ver proyecto
+          </button>
+        </div>
       </div>
     </div>
   </div>
