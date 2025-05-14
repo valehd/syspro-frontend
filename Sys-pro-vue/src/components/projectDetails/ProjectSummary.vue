@@ -2,7 +2,7 @@
   <section class="card project-summary">
     <div class="header">
       <h2>{{ editing ? 'Editar Proyecto' : 'Resumen del Proyecto' }}</h2>
-      <button class="icon-button" v-if="!editing" @click="editing = true" :disabled="isDisabled">Editar</button>
+      <button class="btn" v-if="!editing" @click="editing = true" :disabled="isDisabled">Editar</button>
     </div>
 
     <div class="info-grid">
@@ -80,10 +80,23 @@ watch(() => props.project, (newVal) => {
 
 // Guarda los cambios realizados
 const save = () => {
+  // Desestructuración de los campos requeridos desde la copia local del proyecto
+  const { name, client, start, end } = localProject.value
+
+  // Validación: si algún campo obligatorio está vacío, se interrumpe el guardado
+  if (!name || !client || !start || !end) {
+    alert('Por favor completa todos los campos obligatorios antes de guardar.')
+    return
+  }
+
+  // Si la validación es exitosa, se emite el evento 'save' con los datos modificados
   emit('save', { ...localProject.value })
+
+  // Se desactiva el modo de edición
   editing.value = false
 }
 
+  
 // Cancela la edición y restaura los valores originales
 const cancel = () => {
   localProject.value = { ...props.project }
