@@ -29,7 +29,7 @@
           <template v-if="stage.editing">
             <td>
               <input v-model="stage.name" :disabled="isDisabled" />
-              <p v-if="stageErrors[i]?.name" class="error-text">{{ stageErrors[i].name }}</p>
+              <p v-if="stage.touched && stageErrors[i]?.name" class="error-text">{{ stageErrors[i].name }}</p>
             </td>
             <td>
               <select v-model="stage.tech" :disabled="isDisabled">
@@ -38,19 +38,20 @@
                   {{ tec.nombre_usuario }}
                 </option>
               </select>
-              <p v-if="stageErrors[i]?.tech" class="error-text">{{ stageErrors[i].tech }}</p>
+              <p v-if="stage.touched && stageErrors[i]?.tech" class="error-text">{{ stageErrors[i].tech }}</p>
             </td>
             <td>
               <input type="date" v-model="stage.start" :disabled="isDisabled" />
-              <p v-if="stageErrors[i]?.start" class="error-text">{{ stageErrors[i].start }}</p>
+              <p v-if="stage.touched && stageErrors[i]?.start" class="error-text">{{ stageErrors[i].start }}</p>
             </td>
             <td>
               <input type="date" v-model="stage.due" :disabled="isDisabled" />
-              <p v-if="stageErrors[i]?.due" class="error-text">{{ stageErrors[i].due }}</p>
+              <p v-if="stage.touched && stageErrors[i]?.due" class="error-text">{{ stageErrors[i].due }}</p>
+
             </td>
             <td>
               <input type="number" v-model.number="stage.estTime" min="1" :disabled="isDisabled" />
-              <p v-if="stageErrors[i]?.estTime" class="error-text">{{ stageErrors[i].estTime }}</p>
+              <p v-if="stage.touched && stageErrors[i]?.estTime" class="error-text">{{ stageErrors[i].estTime }}</p>
             </td>
             <td>
               <input v-model="stage.realTime" :disabled="isDisabled" />
@@ -185,7 +186,8 @@ function addNewStage() {
     realTime: '',
     status: 'pendiente',
     reprogrammable: false,
-    editing: true
+    editing: true,
+     touched: false
   })
 }
 
@@ -198,6 +200,7 @@ function removeUnsavedStage(index) {
 async function saveStage(index) {
   if (isDisabled.value) return
   const stage = props.stages[index]
+  stage.touched = true
   const adminId = getCurrentUser()?.id
 
 
