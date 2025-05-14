@@ -93,8 +93,9 @@ import { reactive, ref, onMounted } from 'vue'
 import axios from 'axios'
 
 const API = import.meta.env.VITE_API
-const id_admin = parseInt(localStorage.getItem('usuarioId')) || null
-
+const usuarioLogeado = JSON.parse(localStorage.getItem('usuarioLogeado') || '{}')
+const id_admin = usuarioLogeado.id || null
+  
 // Lista de técnicos disponibles para asignar
 const tecnicosDisponibles = ref([])
 
