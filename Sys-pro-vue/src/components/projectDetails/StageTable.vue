@@ -72,7 +72,7 @@
           <!-- Modo visual -->
           <template v-else>
             <td>{{ stage.name }}</td>
-            <td>{{ stage.techName || '—' }}</td>
+            <td>  {{ etapa.tecnico_nombre ? etapa.tecnico_nombre : 'Por asignar' }} </td>
             <td>{{ stage.start }}</td>
             <td>{{ stage.due }}</td>
             <td>{{ stage.estTime }}</td>
