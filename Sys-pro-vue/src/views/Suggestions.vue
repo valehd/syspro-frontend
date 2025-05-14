@@ -284,4 +284,21 @@ onMounted(() => {
   background-color: #e2f0d9;
   color: #155724;
 }
+  .acciones-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.input-select {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
 </style>
