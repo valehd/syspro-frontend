@@ -24,16 +24,16 @@
           <tbody>
             <tr v-for="(tech, i) in filteredTechs" :key="i">
               <td>{{ tech.tecnico }}</td>
-              <td>{{ tech.dia }}</td>
-              <td>{{ tech.horas_disponibles }}</td>
+              <td>{{ tech.fecha }}</td>
+              <td>{{ tech.horas_libres }}</td>
               <td>
-                <span v-if="tech.sugerencia">
-                  {{ tech.sugerencia.proyecto }} – {{ tech.sugerencia.etapa }} ({{ tech.sugerencia.duracion }} h)
+                <span v-if="tech.tarea_sugerida">
+                  {{ tech.tarea_sugerida.proyecto }} – {{ tech.tarea_sugerida.etapa }} ({{ tech.tarea_sugerida.duracion }} h)
                 </span>
                 <span v-else class="text-gray-400 italic">Sin coincidencias</span>
               </td>
               <td>
-                <button class="btn gray" @click="goToDetails(tech.sugerencia?.id_proyecto)">Ver Detalles</button>
+                <button class="btn gray" @click="goToDetails(tech.tarea_sugerida?.id_proyecto)">Ver Detalles</button>
                 <button class="btn btn-primary" @click="asignarTareaSugerida(tech)">Asignar</button>
               </td>
             </tr>
@@ -133,7 +133,7 @@ async function asignarTareaSugerida(tech) {
   try {
     const body = {
       id_usuario: tech.id_usuario,
-      id_etapa: tech.sugerencia.id_etapa,
+      id_etapa: tech.tarea_sugerida.id_etapa,
       autor: tech.id_usuario
     }
     const res = await axios.post(`${import.meta.env.VITE_API}/asignarEtapa`, body)
@@ -158,6 +158,7 @@ async function asignarEtapaManual(stage) {
     const body = {
       id_usuario: Number(id_usuario),
       id_etapa: stage.id_etapa,
+      id_proyecto: tech.tarea_sugerida.id_proyecto,
       autor: Number(id_usuario)
     }
     const res = await axios.post(`${import.meta.env.VITE_API}/asignarEtapa`, body)
