@@ -213,34 +213,52 @@ stageErrors.value[index] = {
   estTime: ''
 }
 
-  // Validaciones mínimas
-  if (!stage.name || !stage.start || !stage.due) {
-      stageErrors.value[index].name = 'Nombre estapa es obligatorio'
-  return
-  }
-  if (!stage.estTime || isNaN(stage.estTime) || stage.estTime <= 0) {
-   stageErrors.value[index].estTime = 'Las horas estimadas deben ser un número mayor que cero.'
-  return
-    
-  }
-  if (!stage.tech || isNaN(stage.tech)) {
-    stageErrors.value[index].tech = 'Por favor selecciona un tecnico'
-  return
-  }
+// Validación detallada de campos obligatorios para asegurar integridad antes de guardar
+let hasError = false  // Bandera para determinar si se detectó al menos un error
 
-  if (!stage.start) {
-  stageErrors.value[index].start = 'Fecha de inicio requerida'
-  return
+// Validar nombre de la etapa
+if (!stage.name) {
+  stageErrors.value[index].name = 'Nombre de etapa es obligatorio'
+  hasError = true
 }
+
+// Validar fecha de inicio
+if (!stage.start) {
+  stageErrors.value[index].start = 'Fecha de inicio requerida'
+  hasError = true
+}
+
+// Validar fecha de entrega
 if (!stage.due) {
   stageErrors.value[index].due = 'Fecha de entrega requerida'
-  return
+  hasError = true
 }
 
- if (new Date(stage.start) > new Date(stage.due)) {
-  stageErrors.value[index].due = 'La fecha de inicio no puede ser posterior a la fecha de entrega en la etapa'
-  return
+// Validar horas estimadas (debe ser número positivo)
+if (!stage.estTime || isNaN(stage.estTime) || stage.estTime <= 0) {
+  stageErrors.value[index].estTime = 'Las horas estimadas deben ser un número mayor que cero.'
+  hasError = true
 }
+
+// Validar técnico asignado
+if (!stage.tech || isNaN(stage.tech)) {
+  stageErrors.value[index].tech = 'Por favor selecciona un técnico'
+  hasError = true
+}
+
+// Validar coherencia entre fechas (solo si ambas están presentes)
+if (
+  stage.start &&
+  stage.due &&
+  new Date(stage.start) > new Date(stage.due)
+) {
+  stageErrors.value[index].due = 'La fecha de inicio no puede ser posterior a la fecha de entrega en la etapa'
+  hasError = true
+}
+
+// Si se detectó al menos un error, se detiene la ejecución para mostrar mensajes de validación
+if (hasError) return
+
  
 
   try {
