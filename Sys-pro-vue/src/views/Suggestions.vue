@@ -65,32 +65,22 @@
         {{ stage.estado_etapa }}
       </span>
     </td>
-   <td class="acciones-cell">
-  <!-- Botón para ver proyecto -->
-  <button class="btn gray full-width" @click="goToDetails(stage.id_proyecto)">
-    Ver Proyecto
-  </button>
-
-  <!-- Select para técnico -->
-  <select
-    v-model="seleccionTecnico[stage.id_etapa]"
-    class="input-select mt-1 full-width"
-  >
-    <option disabled value="">Selecciona técnico</option>
-    <option v-for="t in tecnicos" :key="t.id_usuario" :value="t.id_usuario">
-      {{ t.nombre_usuario }}
-    </option>
-  </select>
-
-  <!-- Botón de asignar -->
+<td class="acciones-cell">
   <button
-    class="btn btn-primary full-width mt-1"
-    :disabled="!seleccionTecnico[stage.id_etapa]"
-    @click="asignarEtapaConSelect(stage.id_etapa)"
+    class="btn btn-primary btn-sm"
+    :disabled="!stage.id_proyecto"
+    @click="goToDetails(stage.id_proyecto)"
+  >
+    Ver Detalles
+  </button>
+  <button
+    class="btn btn-secondary btn-sm"
+    @click="abrirModalAsignacion(stage)"
   >
     Asignar
   </button>
 </td>
+
   </tr>
 </tbody>
 
@@ -284,21 +274,15 @@ onMounted(() => {
   background-color: #e2f0d9;
   color: #155724;
 }
-  .acciones-cell {
+
+.acciones-cell {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  align-items: stretch;
 }
 
-.full-width {
-  width: 100%;
-}
 
-.input-select {
-  padding: 6px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 0.9rem;
-}
+
 
 </style>
