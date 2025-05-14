@@ -56,25 +56,48 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(stage, i) in filteredShortTasks" :key="i">
-              <td>{{ stage.nombre_proyecto }}</td>
-              <td>{{ stage.nombre_etapa }}</td>
-              <td>{{ stage.horas_estimadas }}</td>
-              <td><span class="status" :class="stage.estado_etapa.toLowerCase()">{{ stage.estado_etapa }}</span></td>
-              <td>
-                <button class="btn gray" @click="goToDetails(stage.id_proyecto)">Ver Detalles</button>
-                  <select v-model="seleccionTecnico[stage.id_etapa]" class="input-search" >
-              <option disabled value="">Selecciona técnico</option>
-              <option v-for="t in tecnicos" :key="t.id_usuario" :value="t.id_usuario">
-                {{ t.nombre_usuario }}
-              </option>
-            </select>
-            <button class="btn btn-primary mt-1":disabled="!seleccionTecnico[stage.id_etapa]" @click="asignarEtapaConSelect(stage.id_etapa)">
-              Asignar
-            </button>
-              </td>
-            </tr>
-          </tbody>
+  <tr v-for="(stage, i) in filteredShortTasks" :key="i">
+    <td>{{ stage.nombre_proyecto }}</td>
+    <td>{{ stage.nombre_etapa }}</td>
+    <td>{{ stage.horas_estimadas }}</td>
+    <td>
+      <span class="status" :class="stage.estado_etapa.toLowerCase()">
+        {{ stage.estado_etapa }}
+      </span>
+    </td>
+    <td>
+      <!-- Botón para abrir los detalles del proyecto -->
+      <button class="btn gray mb-1" @click="goToDetails(stage.id_proyecto)">
+        Ver Proyecto
+      </button>
+
+      <!-- Selector para elegir un técnico disponible -->
+      <select
+        v-model="seleccionTecnico[stage.id_etapa]"
+        class="input-search mt-1"
+      >
+        <option disabled value="">Selecciona técnico</option>
+        <option
+          v-for="t in tecnicos"
+          :key="t.id_usuario"
+          :value="t.id_usuario"
+        >
+          {{ t.nombre_usuario }}
+        </option>
+      </select>
+
+      <!-- Botón para asignar la etapa al técnico seleccionado -->
+      <button
+        class="btn btn-primary mt-1"
+        :disabled="!seleccionTecnico[stage.id_etapa]"
+        @click="asignarEtapaConSelect(stage.id_etapa)"
+      >
+        Asignar
+      </button>
+    </td>
+  </tr>
+</tbody>
+
         </table>
       </section>
     </main>
