@@ -65,36 +65,32 @@
         {{ stage.estado_etapa }}
       </span>
     </td>
-    <td>
-      <!-- Botón para abrir los detalles del proyecto -->
-      <button class="btn gray mb-1" @click="goToDetails(stage.id_proyecto)">
-        Ver Proyecto
-      </button>
+   <td class="acciones-cell">
+  <!-- Botón para ver proyecto -->
+  <button class="btn gray full-width" @click="goToDetails(stage.id_proyecto)">
+    Ver Proyecto
+  </button>
 
-      <!-- Selector para elegir un técnico disponible -->
-      <select
-        v-model="seleccionTecnico[stage.id_etapa]"
-        class="input-search mt-1"
-      >
-        <option disabled value="">Selecciona técnico</option>
-        <option
-          v-for="t in tecnicos"
-          :key="t.id_usuario"
-          :value="t.id_usuario"
-        >
-          {{ t.nombre_usuario }}
-        </option>
-      </select>
+  <!-- Select para técnico -->
+  <select
+    v-model="seleccionTecnico[stage.id_etapa]"
+    class="input-select mt-1 full-width"
+  >
+    <option disabled value="">Selecciona técnico</option>
+    <option v-for="t in tecnicos" :key="t.id_usuario" :value="t.id_usuario">
+      {{ t.nombre_usuario }}
+    </option>
+  </select>
 
-      <!-- Botón para asignar la etapa al técnico seleccionado -->
-      <button
-        class="btn btn-primary mt-1"
-        :disabled="!seleccionTecnico[stage.id_etapa]"
-        @click="asignarEtapaConSelect(stage.id_etapa)"
-      >
-        Asignar
-      </button>
-    </td>
+  <!-- Botón de asignar -->
+  <button
+    class="btn btn-primary full-width mt-1"
+    :disabled="!seleccionTecnico[stage.id_etapa]"
+    @click="asignarEtapaConSelect(stage.id_etapa)"
+  >
+    Asignar
+  </button>
+</td>
   </tr>
 </tbody>
 
