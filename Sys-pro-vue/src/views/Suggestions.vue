@@ -63,7 +63,15 @@
               <td><span class="status" :class="stage.estado_etapa.toLowerCase()">{{ stage.estado_etapa }}</span></td>
               <td>
                 <button class="btn gray" @click="goToDetails(stage.id_proyecto)">Ver Detalles</button>
-                <button class="btn btn-primary" @click="asignarEtapaManual(stage)">Asignar</button>
+                  <select v-model="seleccionTecnico[stage.id_etapa]" class="input-search" >
+              <option disabled value="">Selecciona técnico</option>
+              <option v-for="t in tecnicos" :key="t.id_usuario" :value="t.id_usuario">
+                {{ t.nombre_usuario }}
+              </option>
+            </select>
+            <button class="btn btn-primary mt-1":disabled="!seleccionTecnico[stage.id_etapa]" @click="asignarEtapaConSelect(stage.id_etapa)">
+              Asignar
+            </button>
               </td>
             </tr>
           </tbody>
@@ -84,6 +92,8 @@ const router = useRouter()
 const search = ref('')
 const suggestions = ref([])
 const shortTasks = ref([])
+  const tecnicos = ref([])
+const seleccionTecnico = ref({})
 
 // Filtro de técnicos con tiempo libre
 const filteredTechs = computed(() =>
@@ -180,10 +190,55 @@ function goToDetails(idProyecto) {
   router.push(`/project-details/${idProyecto}`)
 }
 
+//obtiene la lista de técnicos disponibles en el sistema.
+async function fetchTecnicos() {
+  try {
+    // Realiza una solicitud HTTP GET al backend para obtener los usuarios con rol "tecnico"
+    const res = await axios.get(`${import.meta.env.VITE_API}/usuarios?rol=tecnico`)
+
+    // Asigna la respuesta a la variable `tecnicos` (lista de usuarios con rol técnico)
+    tecnicos.value = res.data
+  } catch (err) {
+    // Si ocurre un error en la solicitud, lo muestra por consola
+    console.error('Error al cargar técnicos:', err)
+  }
+}
+
+ //función para asignar etapa con técnico seleccionado
+async function asignarEtapaConSelect(idEtapa) {
+  const id_usuario = seleccionTecnico.value[idEtapa]
+  if (!id_usuario) {
+    alert('Debes seleccionar un técnico.')
+    return
+  }
+
+  try {
+    const body = {
+      id_usuario: Number(id_usuario),
+      id_etapa: idEtapa,
+      autor: Number(id_usuario)
+    }
+    const res = await axios.post(`${import.meta.env.VITE_API}/asignacion`, body)
+    alert(res.data.message || 'Etapa asignada correctamente.')
+
+    // Recargar sugerencias y tareas disponibles
+    fetchSuggestions()
+    fetchShortTasks()
+
+    // Limpiar selección
+    seleccionTecnico.value[idEtapa] = ''
+  } catch (err) {
+    console.error('Error al asignar etapa:', err)
+    alert('Error al asignar etapa.')
+  }
+}
+  
 // Carga inicial de datos cuando el componente es montado
 onMounted(() => {
   fetchSuggestions()
   fetchShortTasks()
+  fetchTecnicos()
+
 })
 </script>
 
