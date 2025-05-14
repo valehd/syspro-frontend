@@ -75,7 +75,8 @@
   </button>
   <button
     class="btn btn-secondary btn-sm"
-    @click="abrirModalAsignacion(stage)"
+    @click="asignarEtapaManual(stage)"
+
   >
     Asignar
   </button>
