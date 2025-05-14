@@ -204,7 +204,7 @@ function goToDetails(idProyecto) {
 async function fetchTecnicos() {
   try {
     // Realiza una solicitud HTTP GET al backend para obtener los usuarios con rol "tecnico"
-    const res = await axios.get(`${import.meta.env.VITE_API}/usuarios?rol=tecnico`)
+    const res = await axios.get(`${import.meta.env.VITE_API}/tecnicos`)
 
     // Asigna la respuesta a la variable `tecnicos` (lista de usuarios con rol técnico)
     tecnicos.value = res.data
