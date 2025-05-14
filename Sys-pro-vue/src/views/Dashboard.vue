@@ -21,9 +21,9 @@
       <AlertCard
         v-for="(slot, index) in timeSlots"
         :key="index"
-        :startDate="slot.dia"
-        :endDate="slot.dia"
-        :hours="slot.horas_disponibles"
+        :startDate="slot.fecha"
+        :endDate="slot.fecha"
+        :hours="slot.horas_libres"
         @open-modal="() => handleFreeTimeDetails(slot)"
       />
 
@@ -204,7 +204,7 @@ async function cargarAlertas() {
 async function cargarTiemposLibres() {
   try {
     const res = await axios.get(`${API}/suggestions`)
-    timeSlots.value = res.data
+    timeSlots.value = res.data.sugerencias || []
   } catch (error) {
     console.error('Error al cargar tiempos libres:', error)
   }
