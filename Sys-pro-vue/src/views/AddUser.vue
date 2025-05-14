@@ -155,7 +155,7 @@ async function handleSubmit() {
     setTimeout(() => {
       mensaje.value = null
       router.push('/tech-view')
-    }, 2000)
+    }, 3000)
   } catch (err) {
     console.error('Error al crear usuario:', err)
     if (err.response?.status === 409) {
