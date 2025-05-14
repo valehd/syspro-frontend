@@ -319,7 +319,7 @@ if (hasError) return
       autor: adminId
     })
 
-    // 🔄 Actualizar nombre del técnico en la tabla visible
+    // Actualizar nombre del técnico en la tabla visible
 const tecnico = props.tecnicos.find(t => t.id_usuario === stage.tech)
 stage.techName = tecnico ? tecnico.nombre_usuario : ''
 
