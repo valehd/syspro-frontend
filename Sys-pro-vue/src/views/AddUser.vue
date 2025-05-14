@@ -151,7 +151,7 @@ async function handleSubmit() {
 
   try {
     await axios.post(`${API}/usuarios/crear`, form.value)
-    mensaje.value = 'Usuario creado correctamente.'
+     mensaje.value = response.data.message || 'Usuario creado correctamente.'
     setTimeout(() => {
       mensaje.value = null
       router.push('/tech-view')
