@@ -230,7 +230,7 @@ async function asignarSugerencia(slot) {
       autor: slot.id_usuario 
     }
 
-    await axios.post(`${API}/asignarEtapa`, body)
+    await axios.post(`${API}/asignaciones`, body)
     alert(`Etapa "${etapa.etapa}" asignada correctamente.`)
     await cargarTiemposLibres()
   } catch (err) {
