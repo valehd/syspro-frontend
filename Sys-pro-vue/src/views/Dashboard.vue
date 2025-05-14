@@ -21,11 +21,11 @@
       <AlertCard
         v-for="(slot, index) in timeSlots"
         :key="index"
-        :startDate="slot.fecha"
-        :endDate="slot.fecha"
-        :hours="slot.horas_libres"
+        :sugerencia="slot"
         @open-modal="() => handleFreeTimeDetails(slot)"
+        @close="() => cerrarAlerta(index)"
       />
+
 
       <!-- Notificaciones generadas por el backend (éxitos, advertencias, errores) -->
       <NotificationList
@@ -143,6 +143,10 @@ function handleDetails(msg) {
 function handleFreeTimeDetails(slot) {
   const etapa = slot.sugerencia?.etapa || 'Sin coincidencia'
   alert(`Tiempo libre detectado para ${slot.tecnico} el día ${slot.dia}.\nSugerencia: ${etapa}`)
+}
+ 
+  function cerrarAlerta(index) {
+  timeSlots.value.splice(index, 1)
 }
 
 // Proyectos filtrados por nombre o cliente según término de búsqueda
