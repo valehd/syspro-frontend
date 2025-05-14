@@ -136,7 +136,7 @@ async function asignarTareaSugerida(tech) {
       id_etapa: tech.tarea_sugerida.id_etapa,
       autor: tech.id_usuario
     }
-    const res = await axios.post(`${import.meta.env.VITE_API}/asignarEtapa`, body)
+    const res = await axios.post(`${import.meta.env.VITE_API}/asignacion`, body)
     alert(res.data.message || 'Etapa asignada correctamente.')
     fetchSuggestions()
     fetchShortTasks()
@@ -161,7 +161,7 @@ async function asignarEtapaManual(stage) {
       id_proyecto: tech.tarea_sugerida.id_proyecto,
       autor: Number(id_usuario)
     }
-    const res = await axios.post(`${import.meta.env.VITE_API}/asignarEtapa`, body)
+    const res = await axios.post(`${import.meta.env.VITE_API}/asignacion`, body)
     alert(res.data.message || 'Etapa asignada correctamente.')
     fetchSuggestions()
     fetchShortTasks()
