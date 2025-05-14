@@ -64,7 +64,7 @@
             </td>
             <td>
               <button class="btn btn-success" @click="saveStage(i)" :disabled="isDisabled">Guardar</button>
-              <button class="btn btn-danger" @click="$emit('cancel-stage', i)" :disabled="isDisabled">Cancelar</button>
+              <button class="btn btn-danger" @click="cancelStage(i)" :disabled="isDisabled">Cancelar</button>
             </td>
           </template>
 
@@ -158,6 +158,19 @@ function habilitarEdicion(stage) {
   stage.editing = true
 }
 
+// Cancela la edición y revierte cambios si es necesario
+function cancelStage(index) {
+  const stage = props.stages[index]
+
+  if (!stage.id_etapa) {
+    props.stages.splice(index, 1)
+  } else {
+    stage.editing = false
+  }
+
+  toast.info(`Edición cancelada para etapa "${stage.name || 'nueva'}"`)
+}
+  
 // Agrega una nueva etapa temporal
 function addNewStage() {
   if (isDisabled.value) return
