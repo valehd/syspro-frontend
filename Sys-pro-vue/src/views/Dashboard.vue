@@ -22,8 +22,11 @@
         v-for="(slot, index) in timeSlots"
         :key="index"
         :sugerencia="slot"
-        @open-modal="() => handleFreeTimeDetails(slot)"
-        @close="() => cerrarAlerta(index)"
+         @open-modal="() => handleFreeTimeDetails(slot)"
+          @close="() => cerrarAlerta(index)"
+          @asignar="() => asignarSugerencia(slot)"
+          @ver-proyecto="() => verProyectoDesdeAlerta(slot)"
+
       />
 
 
@@ -213,4 +216,33 @@ async function cargarTiemposLibres() {
     console.error('Error al cargar tiempos libres:', error)
   }
 }
+
+
+  // Asigna directamente la etapa sugerida al técnico
+async function asignarSugerencia(slot) {
+  const etapa = slot.tarea_sugerida
+  if (!etapa || !slot.id_usuario) return
+
+  try {
+    const body = {
+      id_usuario: slot.id_usuario,
+      id_etapa: etapa.id_etapa,
+      autor: slot.id_usuario 
+    }
+
+    await axios.post(`${API}/asignarEtapa`, body)
+    alert(`Etapa "${etapa.etapa}" asignada correctamente.`)
+    await cargarTiemposLibres()
+  } catch (err) {
+    console.error('Error al asignar sugerencia:', err)
+    alert('No se pudo asignar la etapa sugerida.')
+  }
+}
+
+// Redirige a la vista del proyecto sugerido
+function verProyectoDesdeAlerta(slot) {
+  const id = slot.tarea_sugerida?.id_proyecto
+  if (id) router.push(`/project-details/${id}`)
+}
+
 </script>
