@@ -125,7 +125,7 @@ async function fetchShortTasks() {
 
 // Función para asignar tarea sugerida a un técnico
 async function asignarTareaSugerida(tech) {
-  if (!tech?.sugerencia?.id_etapa || !tech?.id_usuario) {
+  if (!tech?.tarea_sugerida?.id_etapa || !tech?.id_usuario) {
     alert('No hay una tarea válida para asignar.')
     return
   }
@@ -158,7 +158,7 @@ async function asignarEtapaManual(stage) {
     const body = {
       id_usuario: Number(id_usuario),
       id_etapa: stage.id_etapa,
-      id_proyecto: tech.tarea_sugerida.id_proyecto,
+
       autor: Number(id_usuario)
     }
     const res = await axios.post(`${import.meta.env.VITE_API}/asignacion`, body)
