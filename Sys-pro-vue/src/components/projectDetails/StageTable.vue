@@ -289,9 +289,15 @@ if (hasError) return
       if (original.horas_estimadas != stage.estTime) cambios.push('horas_estimadas')
      
   
+let idTecnicoAnterior = null
+try {
+  const { data: asignacion } = await axios.get(`${API}/asignacion/${stage.id_etapa}`)
+  idTecnicoAnterior = asignacion?.id_usuario
+} catch (err) {
+  idTecnicoAnterior = null // No se encontró asignación previa
+}
 
-      const { data: asignacion } = await axios.get(`${API}/asignacion/${stage.id_etapa}`)
-      const idTecnicoAnterior = asignacion?.id_usuario
+      
       if (parseInt(idTecnicoAnterior) !== parseInt(stage.tech)) cambios.push('técnico')
 
       descripcion = cambios.length
