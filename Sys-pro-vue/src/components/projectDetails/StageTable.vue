@@ -31,13 +31,13 @@
               <input v-model="stage.name" :disabled="isDisabled" />
               <p v-if="stage.touched && stageErrors[i]?.name" class="error-text">{{ stageErrors[i].name }}</p>
             </td>
-            <td>
-              <select v-model="stage.tech" :disabled="isDisabled">
-                <option :value="null" disabled>Seleccione técnico</option>
-                <option v-for="tec in tecnicos" :key="tec.id_usuario" :value="tec.id_usuario">
-                  {{ tec.nombre_usuario }}
-                </option>
-              </select>
+            <td><select v-model="stage.tech" :disabled="isDisabled">
+  <option :value="null">-- Por asignar --</option>
+  <option v-for="tec in tecnicos" :key="tec.id_usuario" :value="tec.id_usuario">
+    {{ tec.nombre_usuario }}
+  </option>
+</select>
+            
               <p v-if="stage.touched && stageErrors[i]?.tech" class="error-text">{{ stageErrors[i].tech }}</p>
             </td>
             <td>
@@ -241,8 +241,8 @@ if (!stage.estTime || isNaN(stage.estTime) || stage.estTime <= 0) {
 }
 
 // Validar técnico asignado
-if (!stage.tech || isNaN(stage.tech)) {
-  stageErrors.value[index].tech = 'Por favor selecciona un técnico'
+if (stage.tech && isNaN(stage.tech)) {
+  stageErrors.value[index].tech = 'El valor del técnico seleccionado no es válido'
   hasError = true
 }
 
