@@ -9,7 +9,7 @@ Este repositorio contiene el frontend del sistema SYS-PRO, una plataforma web pa
 - [Axios](https://axios-http.com/)
 - CSS puro (con estructura modular definida en `base.css` y `style.css`)
 
-## 🗂️ Estructura del Proyecto
+## Estructura del Proyecto
 
 src/
 ├── assets/ # Imágenes, logos, etc.
