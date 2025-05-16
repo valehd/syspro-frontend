@@ -313,15 +313,21 @@ if (hasError) return
     }
 
     // Actualizar asignación
-    await axios.post(`${API}/asignacion`, {
-      id_usuario: stage.tech,
-      id_etapa: stage.id_etapa,
-      autor: adminId
-    })
+ // Solo asignar técnico si se ha seleccionado uno (evita errores con valores vacíos)
+if (stage.tech) {
+  // Enviar la solicitud al backend para crear o actualizar la asignación
+  await axios.post(`${API}/asignacion`, {
+    id_usuario: stage.tech,           // ID del técnico seleccionado
+    id_etapa: stage.id_etapa,         // ID de la etapa actual
+    autor: adminId                    // ID del usuario que está realizando la acción
+  })
 
-    // Actualizar nombre del técnico en la tabla visible
-const tecnico = props.tecnicos.find(t => t.id_usuario === stage.tech)
-stage.techName = tecnico ? tecnico.nombre_usuario : ''
+  // Actualizar visualmente el nombre del técnico en la tabla
+  const tecnico = props.tecnicos.find(t => t.id_usuario === stage.tech)
+  stage.techName = tecnico ? tecnico.nombre_usuario : ''
+}
+
+
 
     // Registrar acción en bitácora
     await axios.post(`${API}/bitacora`, {
