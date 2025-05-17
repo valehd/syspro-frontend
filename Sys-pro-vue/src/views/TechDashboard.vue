@@ -124,8 +124,7 @@ async function obtenerInfoTecnico() {
     idTecnico.value = tecnico.id_usuario
     userName.value = tecnico.nombre_usuario
 
-    await cargarTareas()
-    await cargarHistorial()
+ await Promise.all([cargarTareas(), cargarHistorial()])
   } catch (err) {
     console.error('Error al obtener datos del técnico:', err)
     alert('No se pudo cargar la información del usuario.')
@@ -156,8 +155,8 @@ async function obtenerInfoTecnicoComoAdmin() {
     idTecnico.value = tecnico.id_usuario
     userName.value = `${tecnico.nombre_usuario} (modo observador)`
     
-    await cargarTareas()
-    await cargarHistorial()
+    await Promise.all([cargarTareas(), cargarHistorial()])
+
   } catch (err) {
     console.error('Error al obtener datos en modo observador:', err)
   }
@@ -166,17 +165,13 @@ async function obtenerInfoTecnicoComoAdmin() {
 // Carga las tareas asignadas al técnico
 async function cargarTareas() {
   try {
-    const response = await axios.get(`${API}/tareas/por-tecnico/${idTecnico.value}`)
+    // Se utiliza la nueva ruta optimizada que entrega las tareas con horas trabajadas incluidas
+    const response = await axios.get(`${API}/tareas/por-tecnico-con-horas/${idTecnico.value}`)
     const tareas = response.data
-
-    // Obtener horas reales para cada tarea
-    for (const tarea of tareas) {
-      const horasRes = await axios.get(`${API}/registrohoras/etapa/${tarea.id_etapa}/usuario/${idTecnico.value}`)
-      tarea.real_hours = parseFloat(horasRes.data.total_horas || 0).toFixed(2)
-    }
 
     const ahora = new Date()
 
+    // Se clasifican las tareas según su fecha de inicio
     currentTasks.value = tareas.filter(
       t => new Date(t.start_date) <= ahora && t.status !== 'finalizado'
     )
@@ -186,7 +181,7 @@ async function cargarTareas() {
       .sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
 
   } catch (err) {
-    console.error('Error al cargar tareas:', err)
+    console.error('Error al cargar tareas optimizadas:', err)
   }
 }
 
