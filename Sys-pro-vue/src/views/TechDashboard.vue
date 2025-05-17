@@ -166,7 +166,7 @@ async function obtenerInfoTecnicoComoAdmin() {
 async function cargarTareas() {
   try {
     // Se utiliza la nueva ruta optimizada que entrega las tareas con horas trabajadas incluidas
-    const response = await axios.get(`${API}/tareas/por-tecnico-con-horas/${idTecnico.value}`)
+    const response = await axios.get(`${API}/tareas/por-tecnico-con-horas/${idUsuario.value}`)
     const tareas = response.data
 
     const ahora = new Date()
@@ -188,7 +188,7 @@ async function cargarTareas() {
 // Carga el historial de horas trabajadas por el técnico
 async function cargarHistorial() {
   try {
-    const res = await axios.get(`${API}/registrohoras/historial/${idTecnico.value}`)
+    const res = await axios.get(`${API}/registrohoras/historial/${idUsuario.value}`)
     historialHoras.value = res.data
   } catch (err) {
     console.error('Error al obtener historial de horas:', err)
