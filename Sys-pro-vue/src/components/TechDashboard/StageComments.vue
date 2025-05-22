@@ -47,8 +47,8 @@ const nuevoComentario = ref('')
 /**
  * Cada vez que el modal se activa, se cargan los comentarios.
  */
-watch(() => props.visible, (val) => {
-  if (val) fetchComentarios()
+watch(() => props.visible, (val, oldVal) => {
+  if (val && !oldVal) fetchComentarios() // solo cuando se abre
 })
 
 /**
