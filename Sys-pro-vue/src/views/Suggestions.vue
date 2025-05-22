@@ -226,7 +226,7 @@ async function asignarEtapaConSelect(idEtapa) {
     const body = {
       id_usuario: Number(id_usuario),
       id_etapa: idEtapa,
-      autor: Number(id_usuario)
+      autor: getCurrentUser().id_usuario
     }
     const res = await axios.post(`${import.meta.env.VITE_API}/asignacion`, body)
     alert(res.data.message || 'Etapa asignada correctamente.')
