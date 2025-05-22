@@ -95,7 +95,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
-
+import { getCurrentUser } from '@/utils/auth'
 const router = useRouter()
 
 // Variables reactivas para los datos de sugerencias y proyectos cortos
@@ -154,7 +154,7 @@ async function asignarTareaSugerida(tech) {
     const body = {
       id_usuario: tech.id_usuario,
       id_etapa: tech.tarea_sugerida.id_etapa,
-      autor: tech.id_usuario
+      autor: getCurrentUser().id_usuario
     }
     const res = await axios.post(`${import.meta.env.VITE_API}/asignacion`, body)
     alert(res.data.message || 'Etapa asignada correctamente.')
@@ -179,7 +179,7 @@ async function asignarEtapaManual(stage) {
       id_usuario: Number(id_usuario),
       id_etapa: stage.id_etapa,
 
-      autor: Number(id_usuario)
+      autor: getCurrentUser().id_usuario
     }
     const res = await axios.post(`${import.meta.env.VITE_API}/asignacion`, body)
     alert(res.data.message || 'Etapa asignada correctamente.')
